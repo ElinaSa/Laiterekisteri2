@@ -121,6 +121,9 @@ namespace Laiterekisteri
     }
 
     // Class for computers, inherits Device class. Tietokoneiden luokka, perii ominaisuuksia ja metodeja laiteluokasta Device.
+
+    // Lisätty serialiointirivi kokeilumielellä
+    [Serializable]
     class Computer : Device
     {
 
@@ -137,6 +140,8 @@ namespace Laiterekisteri
     }
 
     // Class for smartphones, inherits Device class. Älypuhelinten luokka, perii ominaisuuksia ja metodeja laiteluokasta Device.
+    // Lisätty serialiointirivi kokeilumielellä
+    [Serializable]
     class SmartPhone : Device
     {
         string operatingSystem;
@@ -153,6 +158,9 @@ namespace Laiterekisteri
     }
 
     // Class for Tablets, inherits Device class, Tablettien luokka, perii laiteluokan
+
+    // Lisätty serialiointirivi kokeilumielellä
+    [Serializable]
     class Tablet : Device
     {
         // Fields, kentät ja ominaisuudet
