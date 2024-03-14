@@ -202,10 +202,23 @@ namespace Laiterekisteri
 
             // Luodaan vektorit ja laskurit niiden alkioille
             Computer[] computers = new Computer[10];
-            //computers[0] = new Computer();
-            //computers[0].Identity = "HP Läppäri";
+            computers[0] = new Computer();
+            computers[0].Identity = "HP Läppäri";
+            computers[0].DateBought = "2020-05-02";
+            computers[0].Price = 550;
+            computers[0].Warranty = 12;
 
+            computers[1] = new Computer();
+            computers[1].Identity = "Lenovo V15 kannettava";
+            computers[1].DateBought = "2024-03-01";
+            computers[1].Price = 649.99;
+            computers[1].Warranty = 12;
 
+            computers[2] = new Computer();
+            computers[2].Identity = "Asus Zen AiO";
+            computers[2].DateBought = "2024-01-25";
+            computers[2].Price = 1349.99;
+            computers[2].Warranty = 24;
 
             SmartPhone[] smartPhones = new SmartPhone[10];
             smartPhones[0] = new SmartPhone();
@@ -220,10 +233,14 @@ namespace Laiterekisteri
             smartPhones[1].Price = 799;
             smartPhones[1].Warranty = 24;
 
-
-
-
             Tablet[] tablets = new Tablet[10];
+            tablets[0] = new Tablet();
+            tablets[0].Identity = "Lenovo TAb M10";
+            tablets[0].DateBought = "2022-02-02";
+            tablets[0].Price = 149;
+            tablets[0].Warranty = 24;
+                     
+
             int numberOfComputers = 0;
             int numberOfSmartPhones = 0;
             int numberOfTablets = 0;
@@ -380,6 +397,18 @@ namespace Laiterekisteri
 
                     Console.WriteLine("Pinossa on nyt " + computerStack.Count + " tietokonetta");
                     break;
+
+                    Console.WriteLine("Tablettivektorissa on " + tablets.Length + " alkiota");
+
+                    Console.WriteLine("Pinossa on nyt " + tabletStack.Count + " tablettia");
+                    break;
+
+                    Console.WriteLine("Älypuhelinvektorissa on " + smartPhones.Length + " alkiota");
+
+                    Console.WriteLine("Pinossa on nyt " + smartPhoneStack.Count + " kännykkää");
+                    break;
+
+
                 }
 
             }
