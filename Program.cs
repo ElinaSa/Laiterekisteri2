@@ -536,7 +536,11 @@ namespace Laiterekisteri
 
                     Computer[] savedComputers = (Computer[])formatter.Deserialize(readStream);
 
-                    // Tulostetaan ruudulle tallennettujen 
+                    // Tulostetaan ruudulle tallennettujen koneiden nimi ja takuun päättymispäivä
+
+                    Console.WriteLine("Levylle on tallennettu " + savedComputers.Length + " koneen tiedot");
+                    Console.WriteLine(savedComputers[0].Identity);
+                    savedComputers[0].CalculateWarrantyEndingDate();
 
                     foreach (var item in savedComputers)
                     {
