@@ -496,8 +496,6 @@ namespace Laiterekisteri
 
                         break;
 
-
-
                     case "2":
 
                         Console.Write("Nimi: ");
