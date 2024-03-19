@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// serialisointiin tarvitaan
+// Tietojenkäsittelyyn ja serialisointiin tarvitaan kirjastot
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -16,11 +16,11 @@ namespace Laiterekisteri
     // LUOKKAMÄÄRITYKSET
     // =================
 
-    // Base class for devices, yleinen laiteluokka, yliluokka tietokoneille, tableteille ja puhelimille
+    // Yleinen laiteluokka, yliluokka tietokoneille, tableteille ja puhelimille
+    // Luokka määritellään serialisoitavaksi
 
-    // Lisätty serialisointitieto
     [Serializable]
-    public class Device
+    class Device
     {
         // Kentät ja ominaisuudet
         // ----------------------
@@ -121,8 +121,8 @@ namespace Laiterekisteri
     }
 
     // Class for computers, inherits Device class. Tietokoneiden luokka, perii ominaisuuksia ja metodeja laiteluokasta Device.
+    // Luokka määritellään serialisoitavaksi
 
-    // Lisätty serialiointirivi kokeilumielellä
     [Serializable]
     class Computer : Device
     {
@@ -140,31 +140,35 @@ namespace Laiterekisteri
     }
 
     // Class for smartphones, inherits Device class. Älypuhelinten luokka, perii ominaisuuksia ja metodeja laiteluokasta Device.
-    // Lisätty serialiointirivi kokeilumielellä
-    [Serializable]
-    class SmartPhone : Device
-    {
-        string operatingSystem;
-        public string OperatingSystem { get { return operatingSystem; } set { operatingSystem = value; } }
+    // Luokka määritellään serialisoitavaksi
 
-        // Constructors
-        public SmartPhone() : base()
-        { }
+    // MERKITÄÄN KAIKKI ÄLYPUHELIMEEN LIITTYVÄ KOMMENTEIKSI TIEDON MÄÄRÄN RAJAAMISEKSI
+    // -------------------------------------------------------------------------------
 
-        public SmartPhone(string identity) : base(identity)
-        { }
+    //[Serializable]
+    //class SmartPhone : 
+    //    string operatingSystem;
+    //    public string OperatingSystem { get { return operatingSystem; } set { operatingSystem = value; } }
+
+    //    // Constructors
+    //    public SmartPhone() : base()
+    //    { }
+
+    //    public SmartPhone(string identity) : base(identity)
+    //    { }
 
         // Other methods
-    }
+    //}
 
     // Class for Tablets, inherits Device class, Tablettien luokka, perii laiteluokan
+    // Luokka määritellään serialisoitavaksi
 
-    // Lisätty serialiointirivi kokeilumielellä
     [Serializable]
     class Tablet : Device
     {
-        // Fields, kentät ja ominaisuudet
-        // ------------------------------
+        // Kentät ja ominaisuudet
+        // ----------------------
+
         string operatingSystem;
         // Kenttä -> pieni alkukirjain, Ominaisuus -> iso alkukirjain
         public string OperatingSystem { get { return operatingSystem; } set { operatingSystem = value; } }
@@ -199,60 +203,72 @@ namespace Laiterekisteri
         // ---------------------------
         static void Main(string[] args)
         {
+        // vektorien serialisointi
+        // Määritellään binääridatan muodo
+        IFormatter formatter = new BinaryFormatter();
 
-            // Luodaan vektorit ja laskurit niiden alkioille
-            Computer[] computers = new Computer[10];
-            computers[0] = new Computer();
-            computers[0].Identity = "HP Läppäri";
-            computers[0].DateBought = "2020-05-02";
-            computers[0].Price = 550;
-            computers[0].Warranty = 12;
+        Stream writeStream = new FileStream("ComputerData.dat", FileMode.Create, FileAccess.Write);
 
-            computers[1] = new Computer();
-            computers[1].Identity = "Lenovo V15 kannettava";
-            computers[1].DateBought = "2024-03-01";
-            computers[1].Price = 649.99;
-            computers[1].Warranty = 12;
+        // TARKISTA NÄMÄ KAKSI RIVIÄ, OVATKO OIKEIN TAI OIKEASSA KOHDASSA, KIRJATTU KOMMENTIKSI
+        //formatter.Serialize(writeStream, smartPhones);
+        //writeStream.Close();
 
-            computers[2] = new Computer();
-            computers[2].Identity = "Asus Zen AiO";
-            computers[2].DateBought = "2024-01-25";
-            computers[2].Price = 1349.99;
-            computers[2].Warranty = 24;
+            // TARKISTA MYÖS TÄSTÄ KAKSI KOODIRIVIÄ
+        // Määritellään file stream tietokoneiden tietojen lukemista varten
+        //Stream readStream = new FileStream
+        //    ("ComputerData.dat", FileMode.Open, FileAccess.Read);
 
-            SmartPhone[] smartPhones = new SmartPhone[10];
-            smartPhones[0] = new SmartPhone();
-            smartPhones[0].Identity = "Sony Xperia";
-            smartPhones[0].DateBought = "2022-05-23";
-            smartPhones[0].Price = 350;
-            smartPhones[0].Warranty = 24;
+        // Luodaan vektorit ja laskurit niiden alkioille
+        Computer[] computers = new Computer[10];
+        //SmartPhone[] smartPhones = new SmartPhone[10];
+        Tablet[] tablets = new Tablet[10];
 
-            smartPhones[1] = new SmartPhone();
-            smartPhones[1].Identity = "Samsung Galaxy S23";
-            smartPhones[1].DateBought = "2023-12-12";
-            smartPhones[1].Price = 799;
-            smartPhones[1].Warranty = 24;
+        int numberOfComputers = 0;
+        //int numberOfSmartPhones = 0;
+        int numberOfTablets = 0;
 
-            Tablet[] tablets = new Tablet[10];
-            tablets[0] = new Tablet();
-            tablets[0].Identity = "Lenovo TAb M10";
-            tablets[0].DateBought = "2022-02-02";
-            tablets[0].Price = 149;
-            tablets[0].Warranty = 24;
+        // MERKITÄÄN KOMMENTIKSI MYÖS LAITTEIDEN TÄHÄN KOHTAAN SYÖTETYT TIEDOT, JOTTA OMA KOODI VASTAA ESIMERKKIÄ
+
+
+            //computers[0] = new Computer();
+            //computers[0].Identity = "HP Läppäri";
+            //computers[0].DateBought = "2020-05-02";
+            //computers[0].Price = 550;
+            //computers[0].Warranty = 12;
+
+            //computers[1] = new Computer();
+            //computers[1].Identity = "Lenovo V15 kannettava";
+            //computers[1].DateBought = "2024-03-01";
+            //computers[1].Price = 649.99;
+            //computers[1].Warranty = 12;
+
+            //computers[2] = new Computer();
+            //computers[2].Identity = "Asus Zen AiO";
+            //computers[2].DateBought = "2024-01-25";
+            //computers[2].Price = 1349.99;
+            //computers[2].Warranty = 24;
+
+           
+            //smartPhones[0] = new SmartPhone();
+            //smartPhones[0].Identity = "Sony Xperia";
+            //smartPhones[0].DateBought = "2022-05-23";
+            //smartPhones[0].Price = 350;
+            //smartPhones[0].Warranty = 24;
+
+            //smartPhones[1] = new SmartPhone();
+            //smartPhones[1].Identity = "Samsung Galaxy S23";
+            //smartPhones[1].DateBought = "2023-12-12";
+            //smartPhones[1].Price = 799;
+            //smartPhones[1].Warranty = 24;
+
+            
+            //tablets[0] = new Tablet();
+            //tablets[0].Identity = "Lenovo TAb M10";
+            //tablets[0].DateBought = "2022-02-02";
+            //tablets[0].Price = 149;
+            //tablets[0].Warranty = 24;
                      
-
-            int numberOfComputers = 0;
-            int numberOfSmartPhones = 0;
-            int numberOfTablets = 0;
-
-
-
-            // vektorien serialisointi
-            IFormatter formatter = new BinaryFormatter();
-            Stream writeStream = new FileStream("Phones.dat", FileMode.Create, FileAccess.Write);
-            formatter.Serialize(writeStream, smartPhones);
-
-            writeStream.Close();
+                 
 
             // Vaihtoehtoisesti luodann pino laitteille
             Stack<Computer> computerStack = new Stack<Computer>();
@@ -265,6 +281,7 @@ namespace Laiterekisteri
                 string type = Console.ReadLine();
 
                 // Luodaan Switch-Case -rakenne vaihtoehdoille
+
                 switch (type)
                 {
                     case "1":
@@ -351,20 +368,129 @@ namespace Laiterekisteri
                             break;
                         }
 
+                        // Luodaan myös älypuhelin- ja tablettioliot
+
+                        Console.Write("Nimi: ");
+                        string smartPhoneIdentity = Console.ReadLine();
+                        SmartPhone smartPhone = new SmartPhone(smartPhoneIdentity);
+                        Console.Write("Ostopäivä: ");
+                        smartPhone.DateBought = Console.ReadLine();
+                        Console.Write("Hankintahinta: ");
+                        string price = Console.ReadLine();
+
+                        try
+                        {
+                            smartPhone.Price = double.Parse(price);
+                        }
+
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Virheellinen hintatieto, käytä desimaalipilkkua (,) " + ex.Message);
+
+                            break;
+                        }
+
+                        Console.Write("Takuun kesto kuukausina: ");
+                        string warranty = Console.ReadLine();
+
+                        try
+                        {
+                            smartPhone.Warranty = int.Parse(warranty);
+                        }
+
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Virheellinen takuutieto, vain kuukausien määrä kokonaislukuna" + ex.Message);
+                            break;
+
+                        }
+
+
+                        Console.Write("Prosessorin tyyppi: ");
+                        computer.ProcessorType = Console.ReadLine();
+                        Console.Write("Keskusmuistin määrä (GB): ");
+                        string amountRAM = Console.ReadLine();
+
+                        try
+                        {
+                            smartPhone.AmountRam = int.Parse(amountRAM);
+                        }
+
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Virheellinen muistin määrä, vain kokonaisluvut sallittu" + ex.Message);
+                            break;
+                        }
+
+                        Console.Write("Tallennuskapasiteetti (GB): ");
+                        string storageCapasity = Console.ReadLine();
+
+                        try
+                        {
+                            computer.StorageCapacity = int.Parse(storageCapasity);
+                        }
+
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Virheellinen tallennustilan koko, vain kokonaisluvut sallittu" + ex.Message);
+                            break;
+                        }
+                        smartPhone.ShowPurchaseInfo();
+                        smartPhone.ShowBasicTechnicalInfo();
+
+                        try
+                        {
+                            smartPhone.CalculateWarrantyEndingDate();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Ostopäivä virhellinen " + ex.Message);
+                            break;
+                        }
+
+                        tablet.ShowPurchaseInfo();
+                        tablet.ShowBasicTechnicalInfo();
+
+                        try
+                        {
+                            tablet.CalculateWarrantyEndingDate();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Ostopäivä virhellinen " + ex.Message);
+                            break;
+                        }
+
+
+
                         // Lisätään tietokone vektoriin
                         computers[numberOfComputers] = computer;
                         Console.WriteLine("Vektorin indeksi on nyt " + numberOfComputers);
                         numberOfComputers++;
                         Console.WriteLine("Nyt syötettiin " + numberOfComputers + ". kone");
+                        
+                        // Lisätään kännykkä vektoriin
+                        smartPhones[numberOfSmartPhones] = smartPhone;
+                        Console.WriteLine("Vektorin indeksi on nyt " + numberOfSmartPhones);
+                        numberOfSmartPhones++;
+                        Console.WriteLine("Nyt syötettiin " + numberOfSmartPhones + ". kone");
+
 
                         // Vaihtoehtoisesti lisätään tietokone pinoon
                         computerStack.Push(computer);
+                        smartPhoneStack.Push(smartPhone);
+                        tabletStack.Push(Tablet);
 
                         break;
 
 
 
                     case "2":
+
+                        Console.Write("Nimi: ");
+                        string computerIdentity = Console.ReadLine();
+                        Computer computer = new Computer(computerIdentity);
+                        break;
 
                         Console.Write("Nimi: ");
                         string smartPhoneIdentity = Console.ReadLine();
@@ -406,9 +532,27 @@ namespace Laiterekisteri
                     Console.WriteLine("Älypuhelinvektorissa on " + smartPhones.Length + " alkiota");
 
                     Console.WriteLine("Pinossa on nyt " + smartPhoneStack.Count + " kännykkää");
-                    break;
 
 
+                    // Tallennetaan koneiden tiedot tiedostoon serialisoimalla
+                    
+                    formatter.Serialize(writeStream, computers);
+                    writeStream.Close();
+
+                    // Määritellään file stream tietokoneiden tietojen lukemista varten
+
+                    Stream readStream = new FileStream("ComputerData.dat", FileMode.Open, FileAccess.Read);
+
+                    Computer[] savedComputers = (Computer[])formatter.Deserialize(readStream);
+
+                    // Tulostetaan ruudulle tallennettujen 
+
+                    foreach (var item in savedComputers)
+                    {
+                        Console.WriteLine(item.Identity);
+                        item.CalculateWarrantyEndingDate();
+                    }
+                    break;        
                 }
 
             }
