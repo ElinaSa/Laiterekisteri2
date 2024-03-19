@@ -473,20 +473,7 @@ namespace Laiterekisteri
                         numberOfComputers++;
                         Console.WriteLine("Nyt syötettiin " + numberOfComputers + ". kone");
                         
-                        // Lisätään tabletti vektoriin
-                        // MUUTETAAN TÄMÄKIN KOMMENTIKSI VIELÄ TÄSSÄ KOHTAA
-                        //tablets[numberOfTablets] = tablet;
-                        //Console.WriteLine("Vektorin indeksi on nyt " + numberOfTablets);
-                        //numberOfTablets++;
-                        //Console.WriteLine("Nyt syötettiin " + numberOfTablets + ". kone");
-
-                        //// Lisätään kännykkä vektoriin
-                        //smartPhones[numberOfSmartPhones] = smartPhone;
-                        //Console.WriteLine("Vektorin indeksi on nyt " + numberOfSmartPhones);
-                        //numberOfSmartPhones++;
-                        //Console.WriteLine("Nyt syötettiin " + numberOfSmartPhones + ". kone");
-
-
+                        
 
                         // Vaihtoehtoisesti lisätään tietokone ja muut pinoon
                         computerStack.Push(computer);
