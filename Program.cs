@@ -369,97 +369,101 @@ namespace Laiterekisteri
                         }
 
                         // Luodaan myös älypuhelin- ja tablettioliot
+                        // ÄLYPUHELIMET POIS PELISTÄ TOISTAISEKSI
+                        // KOMMENTEIKSI MYÖS TABLETIT TÄSSÄ KOHTAA
 
-                        Console.Write("Nimi: ");
-                        string smartPhoneIdentity = Console.ReadLine();
-                        SmartPhone smartPhone = new SmartPhone(smartPhoneIdentity);
-                        Console.Write("Ostopäivä: ");
-                        smartPhone.DateBought = Console.ReadLine();
-                        Console.Write("Hankintahinta: ");
-                        string price = Console.ReadLine();
+                        //tablet.ShowPurchaseInfo();
+                        //tablet.ShowBasicTechnicalInfo();
 
-                        try
-                        {
-                            smartPhone.Price = double.Parse(price);
-                        }
+                        //try
+                        //{
+                        //    tablet.CalculateWarrantyEndingDate();
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    Console.WriteLine("Ostopäivä virhellinen " + ex.Message);
+                        //    break;
+                        //}
 
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Virheellinen hintatieto, käytä desimaalipilkkua (,) " + ex.Message);
+                        //Console.Write("Nimi: ");
+                        //string smartPhoneIdentity = Console.ReadLine();
+                        //SmartPhone smartPhone = new SmartPhone(smartPhoneIdentity);
+                        //Console.Write("Ostopäivä: ");
+                        //smartPhone.DateBought = Console.ReadLine();
+                        //Console.Write("Hankintahinta: ");
+                        //string price = Console.ReadLine();
 
-                            break;
-                        }
+                        //try
+                        //{
+                        //    smartPhone.Price = double.Parse(price);
+                        //}
 
-                        Console.Write("Takuun kesto kuukausina: ");
-                        string warranty = Console.ReadLine();
+                        //catch (Exception ex)
+                        //{
+                        //    Console.WriteLine("Virheellinen hintatieto, käytä desimaalipilkkua (,) " + ex.Message);
 
-                        try
-                        {
-                            smartPhone.Warranty = int.Parse(warranty);
-                        }
+                        //    break;
+                        //}
 
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Virheellinen takuutieto, vain kuukausien määrä kokonaislukuna" + ex.Message);
-                            break;
+                        //Console.Write("Takuun kesto kuukausina: ");
+                        //string warranty = Console.ReadLine();
 
-                        }
+                        //try
+                        //{
+                        //    smartPhone.Warranty = int.Parse(warranty);
+                        //}
+
+                        //catch (Exception ex)
+                        //{
+                        //    Console.WriteLine("Virheellinen takuutieto, vain kuukausien määrä kokonaislukuna" + ex.Message);
+                        //    break;
+
+                        //}
 
 
-                        Console.Write("Prosessorin tyyppi: ");
-                        computer.ProcessorType = Console.ReadLine();
-                        Console.Write("Keskusmuistin määrä (GB): ");
-                        string amountRAM = Console.ReadLine();
+                        //Console.Write("Prosessorin tyyppi: ");
+                        //computer.ProcessorType = Console.ReadLine();
+                        //Console.Write("Keskusmuistin määrä (GB): ");
+                        //string amountRAM = Console.ReadLine();
 
-                        try
-                        {
-                            smartPhone.AmountRam = int.Parse(amountRAM);
-                        }
+                        //try
+                        //{
+                        //    smartPhone.AmountRam = int.Parse(amountRAM);
+                        //}
 
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Virheellinen muistin määrä, vain kokonaisluvut sallittu" + ex.Message);
-                            break;
-                        }
+                        //catch (Exception ex)
+                        //{
+                        //    Console.WriteLine("Virheellinen muistin määrä, vain kokonaisluvut sallittu" + ex.Message);
+                        //    break;
+                        //}
 
-                        Console.Write("Tallennuskapasiteetti (GB): ");
-                        string storageCapasity = Console.ReadLine();
+                        //Console.Write("Tallennuskapasiteetti (GB): ");
+                        //string storageCapasity = Console.ReadLine();
 
-                        try
-                        {
-                            computer.StorageCapacity = int.Parse(storageCapasity);
-                        }
+                        //try
+                        //{
+                        //    computer.StorageCapacity = int.Parse(storageCapasity);
+                        //}
 
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Virheellinen tallennustilan koko, vain kokonaisluvut sallittu" + ex.Message);
-                            break;
-                        }
-                        smartPhone.ShowPurchaseInfo();
-                        smartPhone.ShowBasicTechnicalInfo();
+                        //catch (Exception ex)
+                        //{
+                        //    Console.WriteLine("Virheellinen tallennustilan koko, vain kokonaisluvut sallittu" + ex.Message);
+                        //    break;
+                        //}
+                        //smartPhone.ShowPurchaseInfo();
+                        //smartPhone.ShowBasicTechnicalInfo();
 
-                        try
-                        {
-                            smartPhone.CalculateWarrantyEndingDate();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Ostopäivä virhellinen " + ex.Message);
-                            break;
-                        }
+                        //try
+                        //{
+                        //    smartPhone.CalculateWarrantyEndingDate();
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    Console.WriteLine("Ostopäivä virhellinen " + ex.Message);
+                        //    break;
+                        //}
 
-                        tablet.ShowPurchaseInfo();
-                        tablet.ShowBasicTechnicalInfo();
 
-                        try
-                        {
-                            tablet.CalculateWarrantyEndingDate();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Ostopäivä virhellinen " + ex.Message);
-                            break;
-                        }
 
 
 
@@ -469,17 +473,26 @@ namespace Laiterekisteri
                         numberOfComputers++;
                         Console.WriteLine("Nyt syötettiin " + numberOfComputers + ". kone");
                         
-                        // Lisätään kännykkä vektoriin
-                        smartPhones[numberOfSmartPhones] = smartPhone;
-                        Console.WriteLine("Vektorin indeksi on nyt " + numberOfSmartPhones);
-                        numberOfSmartPhones++;
-                        Console.WriteLine("Nyt syötettiin " + numberOfSmartPhones + ". kone");
+                        // Lisätään tabletti vektoriin
+                        // MUUTETAAN TÄMÄKIN KOMMENTIKSI VIELÄ TÄSSÄ KOHTAA
+                        //tablets[numberOfTablets] = tablet;
+                        //Console.WriteLine("Vektorin indeksi on nyt " + numberOfTablets);
+                        //numberOfTablets++;
+                        //Console.WriteLine("Nyt syötettiin " + numberOfTablets + ". kone");
+
+                        //// Lisätään kännykkä vektoriin
+                        //smartPhones[numberOfSmartPhones] = smartPhone;
+                        //Console.WriteLine("Vektorin indeksi on nyt " + numberOfSmartPhones);
+                        //numberOfSmartPhones++;
+                        //Console.WriteLine("Nyt syötettiin " + numberOfSmartPhones + ". kone");
 
 
-                        // Vaihtoehtoisesti lisätään tietokone pinoon
+
+                        // Vaihtoehtoisesti lisätään tietokone ja muut pinoon
                         computerStack.Push(computer);
-                        smartPhoneStack.Push(smartPhone);
-                        tabletStack.Push(Tablet);
+                        //tabletStack.Push(Tablet);
+                        //smartPhoneStack.Push(smartPhone);
+
 
                         break;
 
@@ -488,24 +501,10 @@ namespace Laiterekisteri
                     case "2":
 
                         Console.Write("Nimi: ");
-                        string computerIdentity = Console.ReadLine();
-                        Computer computer = new Computer(computerIdentity);
-                        break;
-
-                        Console.Write("Nimi: ");
-                        string smartPhoneIdentity = Console.ReadLine();
-                        SmartPhone smartPhone = new SmartPhone(smartPhoneIdentity);
-                        break;
-
-
-
-
-                    case "3":
-                        Console.Write("Nimi: ");
                         string tabletIdentity = Console.ReadLine();
                         Tablet tablet = new Tablet(tabletIdentity);
                         break;
-
+                   
                     default:
                         Console.WriteLine("Virheellinen valinta, anna pelkkä numero");
                         break;
@@ -526,13 +525,7 @@ namespace Laiterekisteri
 
                     Console.WriteLine("Tablettivektorissa on " + tablets.Length + " alkiota");
 
-                    Console.WriteLine("Pinossa on nyt " + tabletStack.Count + " tablettia");
-                    break;
-
-                    Console.WriteLine("Älypuhelinvektorissa on " + smartPhones.Length + " alkiota");
-
-                    Console.WriteLine("Pinossa on nyt " + smartPhoneStack.Count + " kännykkää");
-
+                                      
 
                     // Tallennetaan koneiden tiedot tiedostoon serialisoimalla
                     
