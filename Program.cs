@@ -11,6 +11,10 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
+// Kirjastot tietokantayhteyttä varten
+using System.Data;
+using System.Data.SqlClient;
+
 namespace Laiterekisteri
 {
     // LUOKKAMÄÄRITYKSET
@@ -180,6 +184,29 @@ namespace Laiterekisteri
         // ---------------------------
         static void Main(string[] args)
         {
+            // TESTATAAN CRUD-OPERAATIOT LAITE-TAULUA KÄYTTÄMÄLLÄ
+            // --------------------------------------------------
+
+            // LUODAAN YHTEYS SQL SERVERIIN WINDOWS AUTENTIKAATIOTA KÄYTTÄMÄLLÄ
+            using (SqlConnection conn = new SqlConnection("Data Source=LAPTOP-JEKO509J\\SQLEXPRESS;Initial Catalog=Laiterekisteri;Integrated Security=True"))
+            {
+                conn.Open();
+                Console.WriteLine(conn.State);
+                Console.WriteLine("Yhteyteen vastaa SQL Server versio " + conn.ServerVersion);
+
+                // CREATE LUODAAN SQL-KOMENTO SYÖTTÄMÄÄN UUSI LAITE (APPARATUS) LAITE-TAULUUN 
+                // ------
+
+                string insertApparatus = "INSERT INTO dbo.Laite (Nimi, Laitetyyppi, Keskusmuisti, Tallennustila) VALUES ('iPhone', 'Puhelin', '6', '128');";
+
+                SqlCommand cmd = new SqlCommand(insertApparatus, conn);
+
+                cmd.ExecuteNonQuery();
+
+                conn.Close();
+
+                Console.ReadLine();
+            }
             // Määritellään binääridatan muodostaja serialisointia varten
             IFormatter formatter = new BinaryFormatter();
 
