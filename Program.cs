@@ -307,6 +307,7 @@ namespace DeviceDb
 
                         Console.Write("Takuun kesto kuukausina: ");
                         string tabletWarranty = Console.ReadLine();
+                        tablet.Warranty = int.Parse(tabletWarranty);
 
                         Console.Write("Keskusmuistin määrä (GB): ");
                         string amountRam = Console.ReadLine();
