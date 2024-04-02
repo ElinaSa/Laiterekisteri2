@@ -168,7 +168,7 @@ namespace DeviceDb
             while (true)
             {
                 Console.WriteLine("Minkä laitteen tiedot tallennetaan?");
-                Console.Write("1 tietokone, 2 tabletti");
+                Console.Write("1 tietokone, 2 tabletti ");
                 string type = Console.ReadLine();
 
                 // Choises for different type of devices
