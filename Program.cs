@@ -295,12 +295,38 @@ namespace DeviceDb
                         Console.Write("Nimi: ");
                         string tabletIdentity = Console.ReadLine();
                         Tablet tablet = new Tablet(tabletIdentity);
+                        Console.Write("Ostopäivä muodossa vvvv-kk-pp: ");
+                        tablet.DateBought = Console.ReadLine();
+                        Console.Write("Hankintahinta:");
+                        string tabletPrice = Console.ReadLine();
+                        Console.Write("Takuun kesto kuukausina: ");
+                        string tabletWarranty = Console.ReadLine();
 
+                        tablet.ShowPurchaseInfo();
+
+                        string connection3String = "Data Source=LAPTOP-JEKO509J\\SQLEXPRESS;Initial Catalog=Laiterekisteri;Integrated Security=True";
+
+
+                        string insertCommand3 = $"INSERT INTO dbo.Laite (Nimi, Hankintahinta, Hankintapaiva, Takuu, Prosessori, Keskusmuisti, Tallennustila, Laitetyyppi) VALUES ('{tablet.Identity}', {tablet.Price}, '{tablet.DateBought}',{tablet.Warranty}, '{tablet.ProcessorType}', {tablet.AmountRam}, {tablet.StorageCapacity}, 'Tabletti');";
+
+                        using (SqlConnection connection3 = new SqlConnection(connection3String))
+                        {
+                            connection3.Open ();
+                            SqlCommand command = new SqlCommand (insertCommand3, connection3);
+
+                            command.ExecuteNonQuery();
+                            connection3.Close();
+
+                        }
                         break;
+                        
+                        
 
                     default:
                         Console.WriteLine("Virheellinen valinta, anna pelkkä numero");
                         break;
+
+
 
                 }
 
