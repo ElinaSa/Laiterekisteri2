@@ -292,6 +292,8 @@ namespace DeviceDb
 
                     case "2":
 
+                        // Prompt user to enter device information
+
                         Console.Write("Nimi: ");
                         string tabletIdentity = Console.ReadLine();
                         Tablet tablet = new Tablet(tabletIdentity);
@@ -314,8 +316,9 @@ namespace DeviceDb
                         string storageCapacity = Console.ReadLine();
                         tablet.StorageCapacity = int.Parse(storageCapacity);
 
-
+                        // Methods to show entered values
                         tablet.ShowPurchaseInfo();
+                        tablet.ShowBasicTechnicalInfo();
 
                         string connection3String = "Data Source=LAPTOP-JEKO509J\\SQLEXPRESS;Initial Catalog=Laiterekisteri;Integrated Security=True";
 
