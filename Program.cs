@@ -295,12 +295,24 @@ namespace DeviceDb
                         Console.Write("Nimi: ");
                         string tabletIdentity = Console.ReadLine();
                         Tablet tablet = new Tablet(tabletIdentity);
+
                         Console.Write("Ostopäivä muodossa vvvv-kk-pp: ");
                         tablet.DateBought = Console.ReadLine();
+
                         Console.Write("Hankintahinta:");
                         string tabletPrice = Console.ReadLine();
+
                         Console.Write("Takuun kesto kuukausina: ");
                         string tabletWarranty = Console.ReadLine();
+
+                        Console.Write("Keskusmuistin määrä (GB): ");
+                        string amountRam = Console.ReadLine();
+                        tablet.AmountRam = int.Parse(amountRam);
+
+                        Console.Write("Tallennuskapasiteetti (GB): ");
+                        string storageCapacity = Console.ReadLine();
+                        tablet.StorageCapacity = int.Parse(storageCapacity);
+
 
                         tablet.ShowPurchaseInfo();
 
