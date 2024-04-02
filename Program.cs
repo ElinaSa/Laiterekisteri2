@@ -1,43 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-// Tietojenkäsittelyyn ja serialisointiin tarvitaan kirjastot
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-
-// Kirjastot tietokantayhteyttä varten
+// Libraries needed to access SQL Server
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Laiterekisteri
+// Libraries used when converting dates
+using System.Globalization;
+
+
+namespace DeviceDb
 {
-    // LUOKKAMÄÄRITYKSET
-    // =================
-    // Yleinen laiteluokka, yliluokka tietokoneille, tableteille ja puhelimille
-    // Luokka määritellään serialisoitavaksi
-    [Serializable]
+    // CLASS DEFINITIONS FOR DIFFERENT DEVICE TYPES
+    // --------------------------------------------
+
+    // A super class for all kind of devices
+    // =====================================
     class Device
     {
-        // Kentät ja ominaisuudet
+        // Fields and properties
         // ----------------------
 
-        // Luodaan kenttä (field) identity, esitellään (define) ja annetaan arvo (set initial value)
         string identity = "Uusi laite";
-
-        // Luodaan kenttää vastaava ominaisuus (property) Identity ja sille asetusmetodi set ja lukumetodi get.
-        // Ne voi kirjoittaa joko yhdelle tai useammalle riville.
+             
         public string Identity { get { return identity; } set { identity = value; } }
 
         string dateBought = "1.1.2000";
         public string DateBought { get { return dateBought; } set { dateBought = value; } }
-
-        // Huomaa jälkiliite d (suffix)
+    
         double price = 0.00d;
         public double Price { get { return price; } set { price = value; } }
 
@@ -55,20 +48,18 @@ namespace Laiterekisteri
 
         // Constructors 
         // ------------
-
-        // konstruktori eli oliomuodostin ilman argumentteja
         public Device()
         {
 
         }
 
-        // A constructor with one argument, konstruktori nimi-argumentilla, tässä tapauksessa identiteetti
+        // A constructor with one argument
         public Device(string identity)
         {
             this.identity = identity;
         }
 
-        // Another constructor with all arguments, konstrutori kaikilla argumenteilla
+        // Another constructor with all arguments
         public Device(string identity, string dateBought, double price, int warranty)
         {
             this.identity = identity;
@@ -77,13 +68,12 @@ namespace Laiterekisteri
             this.warranty = warranty;
         }
 
-        // Other methods, muut metodit
-        // ---------------------------
+        // Other methods in the superclass
+        // -------------------------------
 
-        // Yliluokan metodit
         public void ShowPurchaseInfo()
         {
-            // Luetaan laitteen ostotiedot sen kentistä, huom! this
+            // Show purchasing data
             Console.WriteLine();
             Console.WriteLine("Laitteen hankintatiedot");
             Console.WriteLine("-----------------------");
@@ -93,7 +83,7 @@ namespace Laiterekisteri
             Console.WriteLine("Takuu: " + this.warranty + " kk");
         }
 
-        // Luetaan laitteen yleiset tekniset tiedot ominaisuuksista, huom iso alkukirjain
+        // Show technical data
         public void ShowBasicTechnicalInfo()
         {
             Console.WriteLine();
@@ -105,16 +95,16 @@ namespace Laiterekisteri
             Console.WriteLine("Levytila: " + StorageCapacity);
         }
 
-        // Lisätään metodi, joka laskee takuun päättymispäivän, huom! ISO-standardi: vuosi-kk-pv
+        // Calculate the ending date of warranty
         public void CalculateWarrantyEndingDate()
         {
-            // Muutetaan pvm merkkijono päivämäärä-kellonaika -muotoon
+            // Convert date string to date time
             DateTime startDate = DateTime.ParseExact(this.DateBought, "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-            // Lisätään takuun kesto
+            // Add warranty months to puchase date
             DateTime endDate = startDate.AddMonths(this.Warranty);
 
-            // Muunnetaan pvm ISO-standardin mukaiseiseen muotoon
+            // Convert it to ISO standard format
             endDate = endDate.Date;
             string isoDate = endDate.ToString("yyyy-MM-dd");
             Console.WriteLine("Takuu päättyy: " + isoDate);
@@ -122,49 +112,41 @@ namespace Laiterekisteri
 
     }
 
-    // Class for computers, inherits Device class. Tietokoneiden luokka, perii ominaisuuksia ja metodeja laiteluokasta Device.
-    // Luokka määritellään serialisoitavaksi
-
-    [Serializable]
+    // Computer class, a subclass of Device
+    // ====================================  
     class Computer : Device
     {
 
-        // Konstruktorit
+        // Constructors
         public Computer() : base()
         { }
 
         public Computer(string identity) : base(identity)
-        { }
-
-
-        // Muut metodit
+        { }       
 
     }
 
  
-    // Class for Tablets, inherits Device class, Tablettien luokka, perii laiteluokan
-    // Luokka määritellään serialisoitavaksi
-
-    [Serializable]
+    // Class for Tablets, a subclass of Device class
+    // =============================================
     class Tablet : Device
     {
-        // Kentät ja ominaisuudet
-        // ----------------------
-
-        string operatingSystem; // Kenttä -> pieni alkukirjain, Ominaisuus -> iso alkukirjain
+        // Subclass specific fields and properties
+        // ---------------------------------------
+        string operatingSystem; 
         public string OperatingSystem { get { return operatingSystem; } set { operatingSystem = value; } }
         bool stylusEnabled = false;
         public bool StylusEnabled { get { return stylusEnabled; } set { stylusEnabled = value; } }
 
-        // Konstruktorit
+        // Constructors
         // -------------
 
         public Tablet() : base() { }
 
         public Tablet(string identity) : base(identity) { }
 
-        // Tablet-luokan erikoismetodit
-        // ----------------------------
+        // Methods specific to Tablet class
+        // --------------------------------
         public void TabletInfo()
         {
             Console.WriteLine();
@@ -176,107 +158,25 @@ namespace Laiterekisteri
 
     }
 
-    // Pääluokan ohjelma, josta tulee Program.exe
-    // ===========================================
+    // THE PROGRAM -> Program.exe
+    // ===========================
     internal class Program
-    {
-        // Ohjelman käynnistävä metodi
-        // ---------------------------
+    {       
         static void Main(string[] args)
         {
-            // TESTATAAN CRUD-OPERAATIOT LAITE-TAULUA KÄYTTÄMÄLLÄ
-            // --------------------------------------------------
-
-            // LUODAAN YHTEYS SQL SERVERIIN WINDOWS AUTENTIKAATIOTA KÄYTTÄMÄLLÄ
-            using (SqlConnection conn = new SqlConnection("Data Source=LAPTOP-JEKO509J\\SQLEXPRESS;Initial Catalog=Laiterekisteri;Integrated Security=True"))
-            {
-                conn.Open();
-                Console.WriteLine(conn.State);
-                Console.WriteLine("Yhteyteen vastaa SQL Server versio " + conn.ServerVersion);
-
-                // CREATE LUODAAN SQL-KOMENTO SYÖTTÄMÄÄN UUSI LAITE (APPARATUS) LAITE-TAULUUN 
-                // ------
-
-                string insertApparatus = "INSERT INTO dbo.Laite (Nimi, Laitetyyppi, Keskusmuisti, Tallennustila) VALUES ('iPhone', 'Puhelin', '6', '128');";
-
-                SqlCommand cmd = new SqlCommand(insertApparatus, conn);
-
-                cmd.ExecuteNonQuery();
-
-                conn.Close();
-
-                Console.ReadLine();
-            }
-            // Määritellään binääridatan muodostaja serialisointia varten
-            IFormatter formatter = new BinaryFormatter();
-
-            // Määritellään toinen file stream pinotallennusta varten
-            Stream stackWriteStream = new FileStream("ComputerStack.dat", FileMode.Create, FileAccess.Write);
-
-            // Luodann pino laitteille, ei ole tarvetta tietää määrää etukäteen
-            Stack<Computer> computerStack = new Stack<Computer>();
-
-
-            // MERKITÄÄN KOMMENTIKSI MYÖS LAITTEIDEN TÄHÄN KOHTAAN SYÖTETYT TIEDOT, JOTTA OMA KOODI VASTAA ESIMERKKIÄ
-
-
-            //computers[0] = new Computer();
-            //computers[0].Identity = "HP Läppäri";
-            //computers[0].DateBought = "2020-05-02";
-            //computers[0].Price = 550;
-            //computers[0].Warranty = 12;
-
-            //computers[1] = new Computer();
-            //computers[1].Identity = "Lenovo V15 kannettava";
-            //computers[1].DateBought = "2024-03-01";
-            //computers[1].Price = 649.99;
-            //computers[1].Warranty = 12;
-
-            //computers[2] = new Computer();
-            //computers[2].Identity = "Asus Zen AiO";
-            //computers[2].DateBought = "2024-01-25";
-            //computers[2].Price = 1349.99;
-            //computers[2].Warranty = 24;
-
-
-            //smartPhones[0] = new SmartPhone();
-            //smartPhones[0].Identity = "Sony Xperia";
-            //smartPhones[0].DateBought = "2022-05-23";
-            //smartPhones[0].Price = 350;
-            //smartPhones[0].Warranty = 24;
-
-            //smartPhones[1] = new SmartPhone();
-            //smartPhones[1].Identity = "Samsung Galaxy S23";
-            //smartPhones[1].DateBought = "2023-12-12";
-            //smartPhones[1].Price = 799;
-            //smartPhones[1].Warranty = 24;
-
-
-            //tablets[0] = new Tablet();
-            //tablets[0].Identity = "Lenovo TAb M10";
-            //tablets[0].DateBought = "2022-02-02";
-            //tablets[0].Price = 149;
-            //tablets[0].Warranty = 24;
-
-
-
-
-
-            // Ikuinen silmukka pääohjelman käynnissä pitämiseen
+            // Forever loop to run the program
             while (true)
             {
                 Console.WriteLine("Minkä laitteen tiedot tallennetaan?");
-                Console.Write("1 tietokone, 2 älypuhelin, 3 tabletti");
+                Console.Write("1 tietokone, 2 tabletti");
                 string type = Console.ReadLine();
 
-                // Luodaan Switch-Case -rakenne vaihtoehdoille
-
+                // Choises for different type of devices
                 switch (type)
                 {
                     case "1":
-
-                        // Kysytään käyttäjiltä tietokoneen tiedot
-                        // ja luodaan uusi tietokoneolio
+                     
+                        // Prompt user to enter device information
                         Console.Write("Nimi: ");
                         string computerIdentity = Console.ReadLine();
                         Computer computer = new Computer(computerIdentity);
@@ -285,7 +185,7 @@ namespace Laiterekisteri
                         Console.Write("Hankintahinta: ");
                         string price = Console.ReadLine();
 
-                        // Tehdään tietotyyppimuunnokset
+                        // Use error handling while trying to convert string values to numerical values
                         try
                         {
                             computer.Price = double.Parse(price);
@@ -344,7 +244,7 @@ namespace Laiterekisteri
                             break;
                         }
 
-                        // Näytetään olion tiedot metodien avulla
+                        // Use methods to show entered values
                         computer.ShowPurchaseInfo();
                         computer.ShowBasicTechnicalInfo();
 
@@ -358,107 +258,36 @@ namespace Laiterekisteri
                             break;
                         }
 
-                        // Lisätään tietokone (ja myöhemmin muut?) pinoon
-                        computerStack.Push(computer);
-                        //tabletStack.Push(Tablet);
-                        //smartPhoneStack.Push(smartPhone);
-                        break;
-                    //
-
-                    // Luodaan myös älypuhelin- ja tablettioliot
-                    // ÄLYPUHELIMET POIS PELISTÄ TOISTAISEKSI
-                    // KOMMENTEIKSI MYÖS TABLETIT TÄSSÄ KOHTAA
-
-                    //tablet.ShowPurchaseInfo();
-                    //tablet.ShowBasicTechnicalInfo();
-
-                    //try
-                    //{
-                    //    tablet.CalculateWarrantyEndingDate();
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    Console.WriteLine("Ostopäivä virhellinen " + ex.Message);
-                    //    break;
-                    //}
-
-                    //Console.Write("Nimi: ");
-                    //string smartPhoneIdentity = Console.ReadLine();
-                    //SmartPhone smartPhone = new SmartPhone(smartPhoneIdentity);
-                    //Console.Write("Ostopäivä: ");
-                    //smartPhone.DateBought = Console.ReadLine();
-                    //Console.Write("Hankintahinta: ");
-                    //string price = Console.ReadLine();
-
-                    //try
-                    //{
-                    //    smartPhone.Price = double.Parse(price);
-                    //}
-
-                    //catch (Exception ex)
-                    //{
-                    //    Console.WriteLine("Virheellinen hintatieto, käytä desimaalipilkkua (,) " + ex.Message);
-
-                    //    break;
-                    //}
-
-                    //Console.Write("Takuun kesto kuukausina: ");
-                    //string warranty = Console.ReadLine();
-
-                    //try
-                    //{
-                    //    smartPhone.Warranty = int.Parse(warranty);
-                    //}
-
-                    //catch (Exception ex)
-                    //{
-                    //    Console.WriteLine("Virheellinen takuutieto, vain kuukausien määrä kokonaislukuna" + ex.Message);
-                    //    break;
-
-                    //}
+                        // Add the computer to Device table
+                        Console.WriteLine("Lisätään tietokone Laite-tauluun");
 
 
-                    //Console.Write("Prosessorin tyyppi: ");
-                    //computer.ProcessorType = Console.ReadLine();
-                    //Console.Write("Keskusmuistin määrä (GB): ");
-                    //string amountRAM = Console.ReadLine();
+                        // Create a connection to DB server
+                        // --------------------------------
 
-                    //try
-                    //{
-                    //    smartPhone.AmountRam = int.Parse(amountRAM);
-                    //}
+                        // Connection string to the database using Windows authentication
+                        string connectionString = "Data Source=LAPTOP-JEKO509J\\SQLEXPRESS;Initial Catalog=Laiterekisteri;Integrated Security=True";
 
-                    //catch (Exception ex)
-                    //{
-                    //    Console.WriteLine("Virheellinen muistin määrä, vain kokonaisluvut sallittu" + ex.Message);
-                    //    break;
-                    //}
+                        // Convert all data types to a string, add quates to original string values
+                        string valuesString = "'" + computer.Identity + "', " + computer.Price.ToString() + ", '" + computer.DateBought + "', " + computer.Warranty.ToString() + ", '" + computer.ProcessorType + "', " + computer.AmountRam.ToString() + ", " + computer.StorageCapacity.ToString() + ", " + "'Tietokone'";
 
-                    //Console.Write("Tallennuskapasiteetti (GB): ");
-                    //string storageCapasity = Console.ReadLine();
+                        string insertCommand = "INSERT INTO dbo.Laite (Nimi, Hankintahinta, Hankintapaiva, Takuu, Prosesssori, Keskusmuisti, Tallennustila, Laitetyyppi) VALUES(" + valuesString +");";             
+                        
+                        // More readable way to create the SQL clause
+                        string insertCommand2 = $"INSERT INTO dbo.Laite (Nimi, Hankintahinta, Hankintapaiva, Takuu, Prosessori, Keskusmuisti, Tallennustila, Laitetyyppi) VALUES('{computer.Identity}', {computer.Price},                        '{computer.DateBought}', {computer.Warranty}, '{computer.ProcessorType}', {computer.AmountRam}, {computer.StorageCapacity}, 'Tietokone');";
 
-                    //try
-                    //{
-                    //    computer.StorageCapacity = int.Parse(storageCapasity);
-                    //}
+                        // Connect to the database inside using clause 
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+                            SqlCommand command = new SqlCommand(insertCommand2, connection);
 
-                    //catch (Exception ex)
-                    //{
-                    //    Console.WriteLine("Virheellinen tallennustilan koko, vain kokonaisluvut sallittu" + ex.Message);
-                    //    break;
-                    //}
-                    //smartPhone.ShowPurchaseInfo();
-                    //smartPhone.ShowBasicTechnicalInfo();
+                            //Execute the sql clause, no result set
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                        }
 
-                    //try
-                    //{
-                    //    smartPhone.CalculateWarrantyEndingDate();
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    Console.WriteLine("Ostopäivä virhellinen " + ex.Message);
-                    //    break;
-                    //}
+                        break;               
 
 
                     case "2":
@@ -466,53 +295,53 @@ namespace Laiterekisteri
                         Console.Write("Nimi: ");
                         string tabletIdentity = Console.ReadLine();
                         Tablet tablet = new Tablet(tabletIdentity);
+
                         break;
-                   
+
                     default:
                         Console.WriteLine("Virheellinen valinta, anna pelkkä numero");
                         break;
+
                 }
 
-                // Ohjelman sulkieminen: poistutaan ikuisesta silmukasta
+                // Exit the program, exit the loop
                 Console.WriteLine("Haluatko jatkaa K/e");
                 string continueAnswer = Console.ReadLine();
                 continueAnswer = continueAnswer.Trim();
                 continueAnswer = continueAnswer.ToLower();
                 if (continueAnswer == "e")
                 {
-                    // Kerrotaan pinossa olevien olioiden määrä                 
-                    Console.WriteLine("Pinossa on nyt " + computerStack.Count + " tietokonetta");
+                    // Connection string to the database using Windows authentication
+                    string connectionString = "Data Source=LAPTOP-JEKO509J\\SQLEXPRESS;Initial Catalog=Laiterekisteri;Integrated Security=True";
+                    // Query only systems with processor information to avoid null exception
+                    string sqlQuery = "SELECT Nimi, Prosessori, Keskusmuisti, Tallennustila, Laitetyyppi FROM dbo.Laite WHERE Prosessori IS NOT NULL;";
+                    // Select all from Laite table
+                    // Connect to the database inside using clause
 
-                    // Tallennetaan koneiden tiedot pinomuodossa tiedostoon
-                    formatter.Serialize(stackWriteStream, computerStack);
-                    stackWriteStream.Close();
-
-                    // Määritellään file stream tietokoneiden tietojen lukemista varten
-                    Stream readStackStream = new FileStream("ComputerStack.dat", FileMode.Open, FileAccess.Read);
-
-                    // Määritellään uusi pino luettuja tietoja varten
-                    Stack<Computer> savedStack;
-
-                    // Deserialisoidaan tiedosto pinoon ja suljetaan tiedosto
-                    savedStack = (Stack<Computer>)formatter.Deserialize(readStackStream);
-                    readStackStream.Close();
-
-                    // Pinoon tallennetaan vain todellisuudessa syötetyt koneet, voidaan lukea koko pino silmukassa
-                    foreach (var item in savedStack)
+                    using (SqlConnection connection2 = new SqlConnection(connectionString))
                     {
-                        Console.WriteLine("Koneen " + item.Identity + " takuu päättyy");
-                        item.CalculateWarrantyEndingDate();
-                    }
+                        connection2.Open();
+                        SqlCommand command = new SqlCommand(sqlQuery, connection2);
+                        command.CommandTimeout = 10;
 
-                    // Poistutaan ikuisesta silmukasta ja päätetään ohjelma
+                        // Execute the sql clause using reader
+                        SqlDataReader reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+                           Console.WriteLine("\t{0}\t{1}\t{2}\t{3}\t{4}", reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetString(4));
+
+                            connection2.Close();
+
+                            break;
+                        }
+
+                    }
+                 
                     break;
-               
-                   
                 }
 
+               
             }
-
-            // Pidetään ikkuna auki, kunnes käyttäjä painaa enteriä
             Console.ReadLine();
         }
     }
