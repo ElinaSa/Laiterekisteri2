@@ -301,6 +301,7 @@ namespace DeviceDb
 
                         Console.Write("Hankintahinta:");
                         string tabletPrice = Console.ReadLine();
+                        tablet.Price = double.Parse(tabletPrice);
 
                         Console.Write("Takuun kesto kuukausina: ");
                         string tabletWarranty = Console.ReadLine();
